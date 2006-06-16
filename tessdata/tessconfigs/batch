@@ -26,8 +26,8 @@ MaxNormScaleX				0.325
 MinNormScaleY				0.0
 MaxNormScaleY				0.325
 
-BuiltInTemplatesFile		data/inttemp
-BuiltInCutoffsFile		data/pffmtable
+BuiltInTemplatesFile		tessdata/inttemp
+BuiltInCutoffsFile		tessdata/pffmtable
 
 EnableLearning				0
 SaveAdaptedTemplates		0
@@ -44,7 +44,7 @@ EnableNewAdaptRules		1
 ################################################################################
 #
 # File:         marks/configs/knobs
-# RCS:          $Header: /src/isri/cvsroot/isri/ocr/hp/debug/data/tessconfigs/batch,v 1.1.1.1 2004/02/20 19:39:41 slumos Exp $
+# RCS:          $Header: /cvsroot/tesseract-ocr/tesseract/tessdata/tessconfigs/batch,v 1.1 2006/06/16 22:17:08 lvincent Exp $
 # Description:  Control variables for 'marks' code
 # Author:       Mark Seaman, OCR Technology
 # Created:      Wed Feb 27 11:27:27 1991
