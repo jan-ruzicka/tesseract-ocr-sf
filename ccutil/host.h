@@ -50,7 +50,7 @@
 */
 #ifdef HAVE_CONFIG_H
 #include "config_auto.h"
-#ifdef MOTOROLA_BYTE_ORDER
+#ifdef WORDS_BIGENDIAN
 #define __MOTO__  // Big-endian.
 #endif
 #endif
