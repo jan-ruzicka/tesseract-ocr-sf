@@ -441,9 +441,8 @@ void MEM_ALLOCATOR::check(                     //check consistency
                                  //out of bounds
         || chunk + chunksize - block->blockstart <= 0 || block->blockend - (chunk + chunksize) < 0)
         BADMEMCHUNKS.error ("check_mem", ABORT,
-          "Block=%x, Prev chunk=%x, Chunk=%x, Size=%x",
-          (int) block, (int) prevchunk, (int) chunk,
-          (int) chunk->size);
+          "Block=%p, Prev chunk=%p, Chunk=%p, Size=%x",
+          block, prevchunk, chunk, (int) chunk->size);
 
       else if (chunk->size < 0) {
         usedcount++;             //used block

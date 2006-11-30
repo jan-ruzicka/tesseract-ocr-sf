@@ -82,7 +82,7 @@ type *new()                                                                  \
 			newblock=(char *)memalloc_p(sizeof(type)*blocksize+4);              \
 			if (newblock!=NULL)                                                 \
 			{                                                                   \
-				newblock=(char *)(((int)newblock +4) & (-8));                    \
+				newblock=(char *)(((ptrdiff_t)newblock +4) & (-8));                    \
 			}                                                                   \
 			element=(type *)newblock;                                           \
 		}                                                                      \
@@ -142,7 +142,7 @@ type *name()											/*returns a new type*/\
 			newblock=(char *)memalloc_p(sizeof(type)*blocksize+4);\
 			if (newblock!=NULL)\
 			{\
-				newblock=(char *)(((int)newblock +4) & (-8));\
+				newblock=(char *)(((ptrdiff_t)newblock +4) & (-8));\
 			}\
 			element=(type *)newblock;\
 		}\

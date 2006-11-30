@@ -168,7 +168,7 @@ class DLLSYM STRING
       char *instring;            //input from read
       INT32 length;              //length of string
 
-      instring = (char *) de_serialise_bytes (f, (int) ptr);
+      instring = (char *) de_serialise_bytes (f, (ptrdiff_t) ptr);
       length = (INT32) ptr;
       ptr = NULL;
       *this = instring;

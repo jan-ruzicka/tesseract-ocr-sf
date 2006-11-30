@@ -124,7 +124,7 @@ DLLSYM char *alloc_string(             //allocate string
 DLLSYM void free_string(              //free a string
                         char *string  //string to free
                        ) {
-  if (((int) string & 3) == 1) { //one over word
+  if (((ptrdiff_t) string & 3) == 1) { //one over word
     string--;                    //get id marker
     if (*string == 0) {
       free_mem(string);  //generally free it
