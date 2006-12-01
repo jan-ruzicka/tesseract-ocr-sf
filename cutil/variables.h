@@ -71,7 +71,7 @@ extern VALUE dummy;              /* Needed for macros */
 
 #define float_variable(name,string,default)                \
 dummy.float_part = default;                              \
-add_variable (&name, "", dummy, float_read, float_write)
+add_32bit_variable (&name, "", dummy, float_read, float_write)
 
 /**********************************************************************
  * string_variable
@@ -82,7 +82,7 @@ add_variable (&name, "", dummy, float_read, float_write)
 
 #define string_variable(name,string,default)              \
 dummy.char_part = strsave (default);                    \
-add_variable (&name, "", dummy, string_read, string_write)
+add_ptr_variable (&name, "", dummy, string_read, string_write)
 
 /**********************************************************************
  * int_variable
@@ -93,7 +93,7 @@ add_variable (&name, "", dummy, string_read, string_write)
 
 #define int_variable(name,string,default)                 \
 dummy.int_part = default;                              \
-add_variable (&name, "", dummy, int_read, int_write)
+add_32bit_variable (&name, "", dummy, int_read, int_write)
 
 #else
 /**********************************************************************
@@ -105,7 +105,7 @@ add_variable (&name, "", dummy, int_read, int_write)
 
 #define float_variable(name,string,default)                \
 dummy.float_part = default;                              \
-add_variable (&name, string, dummy, float_read, float_write)
+add_32bit_variable (&name, string, dummy, float_read, float_write)
 
 /**********************************************************************
  * string_variable
@@ -116,7 +116,7 @@ add_variable (&name, string, dummy, float_read, float_write)
 
 #define string_variable(name,string,default)              \
 dummy.char_part = strsave (default);                    \
-add_variable (&name, string, dummy, string_read, string_write)
+add_ptr_variable (&name, string, dummy, string_read, string_write)
 
 /**********************************************************************
  * int_variable
@@ -127,17 +127,23 @@ add_variable (&name, string, dummy, string_read, string_write)
 
 #define int_variable(name,string,default)                 \
 dummy.int_part = default;                              \
-add_variable (&name, string, dummy, int_read, int_write)
+add_32bit_variable (&name, string, dummy, int_read, int_write)
 #endif
 
 /*--------------------------------------------------------------------------
         Public Function Prototoypes
 ----------------------------------------------------------------------------*/
-void add_variable(void *address,
-                  const char *string,
-                  VALUE default_value,
-                  variables_io reader,
-                  variables_io writer);
+void add_ptr_variable(void *address,
+                      const char *string,
+                      VALUE default_value,
+                      variables_io reader,
+                      variables_io writer);
+
+void add_32bit_variable(void *address,
+                        const char *string,
+                        VALUE default_value,
+                        variables_io reader,
+                        variables_io writer);
 
 void float_read(VARIABLE *variable, char *string); 
 

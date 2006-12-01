@@ -61,15 +61,16 @@ else                                         \
           F u n c t i o n s
 ----------------------------------------------------------------------*/
 /**********************************************************************
- * add_variable
+ * add_ptr_variable
  *
- * Add a new variable to the global variable list.  Initalize its value.
+ * Add a new ptr variable to the global variable list.  Initalize its
+ * value.
  **********************************************************************/
-void add_variable(void *address,
-                  const char *string,
-                  VALUE default_value,
-                  variables_io reader,
-                  variables_io writer) {
+void add_ptr_variable(void *address,
+                      const char *string,
+                      VALUE default_value,
+                      variables_io reader,
+                      variables_io writer) {
   VARIABLE *this_var;
   this_var =
     (VARIABLE *) c_alloc_struct (sizeof (VARIABLE), "VARIABLE(TESS)");
@@ -81,6 +82,32 @@ void add_variable(void *address,
   this_var->type_writer = writer;
 
   *((void **) this_var->address) = default_value.ptr_part;
+  variable_list = push (variable_list, this_var);
+}
+
+
+/**********************************************************************
+ * add_32bit_variable
+ *
+ * Add a new 32bit variable to the global variable list.  Initalize
+ * its value.
+ **********************************************************************/
+void add_32bit_variable(void *address,
+                        const char *string,
+                        VALUE default_value,
+                        variables_io reader,
+                        variables_io writer) {
+  VARIABLE *this_var;
+  this_var =
+    (VARIABLE *) c_alloc_struct (sizeof (VARIABLE), "VARIABLE(TESS)");
+
+  this_var->address = address;
+  this_var->string = string;
+  this_var->default_value = default_value;
+  this_var->type_reader = reader;
+  this_var->type_writer = writer;
+
+  *((int *) this_var->address) = default_value.int_part;
   variable_list = push (variable_list, this_var);
 }
 

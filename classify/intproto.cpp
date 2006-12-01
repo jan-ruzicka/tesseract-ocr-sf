@@ -861,6 +861,8 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
  */
   int i, j, x, y, z;
   int nread;
+  int tot_nread = 0;
+  int junk;
   INT_TEMPLATES Templates;
   CLASS_PRUNER Pruner;
   INT_CLASS Class;
@@ -869,21 +871,40 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
 
   /* first read the high level template struct */
   Templates = NewIntTemplates ();
-  if ((nread =
-    fread ((char *) Templates, 1, sizeof (INT_TEMPLATES_STRUCT),
-    File)) != sizeof (INT_TEMPLATES_STRUCT))
-    cprintf ("Bad read of inttemp!\n");
-  //      int tmp=__NATIVE__;
-                                 //xiaofan
-  // swap status is determined automatically
-  if (swap && Templates->NumClassPruners > 0 &&
-      Templates->NumClassPruners < 1000)
-    swap = FALSE;
-  if (swap) {
-    reverse32 (&Templates->NumClassPruners);
-    reverse32 (&Templates->NumClasses);
-    for (i = 0; i < MAX_CLASS_ID + 1; i++)
-      reverse16 (&Templates->IndexFor[i]);
+
+  if((nread = fread(&Templates->NumClasses, 1, sizeof(int), File)) != sizeof(int))
+    cprintf("Bad read of inttemp!\n");
+  reverse32(&Templates->NumClasses);
+  tot_nread += nread;
+
+  if((nread = fread(&Templates->NumClassPruners, 1, sizeof(int), File)) != sizeof(int))
+    cprintf("Bad read of inttemp!\n");
+  reverse32(&Templates->NumClassPruners);
+  tot_nread += nread;
+
+  for(i=0; i < MAX_CLASS_ID + 1; i++) {
+    if((nread = fread(&Templates->IndexFor[i], 1, sizeof(CLASS_INDEX), File)) != sizeof(CLASS_INDEX))
+      cprintf("Bad read of inttemp!\n");
+    reverse16(&Templates->IndexFor[i]);
+    tot_nread += nread;
+  }
+
+  for(i=0; i < MAX_NUM_CLASSES; i++) {
+    if((nread = fread(&Templates->ClassIdFor[i], 1, sizeof(CLASS_ID), File)) != sizeof(CLASS_ID))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
+  }
+
+  for(i=0; i < MAX_NUM_CLASSES; i++) {
+    if((nread = fread(&junk, 1, sizeof(junk), File)) != sizeof(junk))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
+  }
+
+  for(i=0; i < MAX_NUM_CLASS_PRUNERS; i++) {
+    if((nread = fread(&junk, 1, sizeof(junk), File)) != sizeof(junk))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
   }
 
   /* then read in the class pruners */
@@ -904,6 +925,7 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
         }
       }
     }
+    tot_nread += nread;
     Templates->ClassPruner[i] = Pruner;
   }
 
@@ -911,13 +933,35 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
   for (i = 0; i < NumClassesIn (Templates); i++) {
     /* first read in the high level struct for the class */
     Class = (INT_CLASS) Emalloc (sizeof (INT_CLASS_STRUCT));
-    if ((nread = fread ((char *) Class, 1, sizeof (INT_CLASS_STRUCT), File))
-      != sizeof (INT_CLASS_STRUCT))
-      cprintf ("Bad read of inttemp!\n");
-    if (swap) {
-      reverse16 (&Class->NumProtos);
-      for (j = 0; j < MAX_NUM_CONFIGS; j++)
-        reverse16 (&Class->ConfigLengths[j]);
+
+    if((nread = fread(&Class->NumProtos, 1, sizeof(UINT16), File)) != sizeof(UINT16))
+      cprintf("Bad read of inttemp!\n");
+    reverse16(&Class->NumProtos);
+    tot_nread += nread;
+
+    if((nread = fread(&Class->NumProtoSets, 1, sizeof(UINT8), File)) != sizeof(UINT8))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
+
+    if((nread = fread(&Class->NumConfigs, 1, sizeof(UINT8), File)) != sizeof(UINT8))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
+
+    for(j=0; j < MAX_NUM_PROTO_SETS; j++) {
+      if((nread = fread(&junk, 1, sizeof(junk), File)) != sizeof(junk))
+        cprintf("Bad read of inttemp!\n");
+      tot_nread += nread;
+    }
+
+    if((nread = fread(&junk, 1, sizeof(junk), File)) != sizeof(junk))
+      cprintf("Bad read of inttemp!\n");
+    tot_nread += nread;
+
+    for(j=0; j < MAX_NUM_CONFIGS; j++) {
+      if((nread = fread(&Class->ConfigLengths[j], 1, sizeof(UINT16), File)) != sizeof(UINT16))
+        cprintf("Bad read of inttemp!\n");
+      reverse16(&Class->ConfigLengths[j]);
+      tot_nread += nread;
     }
     ClassForIndex (Templates, i) = Class;
 
@@ -929,6 +973,7 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
       File)) != MaxNumIntProtosIn (Class))
       cprintf ("Bad read of inttemp!\n");
     Class->ProtoLengths = Lengths;
+    tot_nread += nread;
 
     /* then read in the proto sets */
     for (j = 0; j < NumProtoSetsIn (Class); j++) {
@@ -947,6 +992,7 @@ INT_TEMPLATES ReadIntTemplates(FILE *File, BOOL8 swap) {
             reverse32 (&ProtoSet->Protos[x].Configs[y]);
       }
       ProtoSetIn (Class, j) = ProtoSet;
+      tot_nread += nread;
     }
   }
   return (Templates);
