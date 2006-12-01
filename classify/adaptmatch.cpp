@@ -824,7 +824,13 @@ void InitAdaptiveClassifier() {
   #else
   File = Efopen (Filename, "rb");
   #endif
+
+  #ifdef __MOTO__
+  PreTrainedTemplates = ReadIntTemplates (File, FALSE);
+  #else
   PreTrainedTemplates = ReadIntTemplates (File, TRUE);
+  #endif
+
   fclose(File); 
 
   strcpy(Filename, demodir); 
