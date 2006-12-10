@@ -22,7 +22,7 @@
           Include Files and Type Defines
 ----------------------------------------------------------------------------**/
 #define BITSINLONG      32       /*no of bits in a long */
-typedef unsigned long *BIT_VECTOR;
+typedef unsigned int *BIT_VECTOR;
 
 /**----------------------------------------------------------------------------
           Public Function Prototypes
