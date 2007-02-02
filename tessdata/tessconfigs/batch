@@ -10,8 +10,6 @@ CertaintyScale          20.0
 
 #EnableMatcher				0
 #CurrentFx					2
-EnableMicroFeatures      1
-EnableCharNormFeatures   1
 MinSlope                 0.414213562
 MaxSlope                 2.414213562
 #ExtremityMode            1
@@ -44,7 +42,7 @@ EnableNewAdaptRules		1
 ################################################################################
 #
 # File:         marks/configs/knobs
-# RCS:          $Header: /cvsroot/tesseract-ocr/tesseract/tessdata/tessconfigs/batch,v 1.1 2006/06/16 22:17:08 lvincent Exp $
+# RCS:          $Header: /src/isri/cvsroot/isri/ocr/hp/debug/data/tessconfigs/batch,v 1.1.1.1 2004/02/20 19:39:41 slumos Exp $
 # Description:  Control variables for 'marks' code
 # Author:       Mark Seaman, OCR Technology
 # Created:      Wed Feb 27 11:27:27 1991
@@ -63,7 +61,6 @@ save_doc_words          1
 doc_dict_enable         1
 ClassPrunerThreshold			229
 ClassPrunerMultiplier		15
-IntegerMatcherMultiplier	7
 IntThetaFudge					128
 CPCutoffStrength				0.15
 EvidenceTableBits				9
